@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using static Guna.UI2.WinForms.Suite.Descriptions;
 
 namespace WeatherAPP
 {
@@ -14,6 +15,23 @@ namespace WeatherAPP
         private void SetProprierties()
         {
 
+            //impostare il cursore con controllo eccezzione
+            Bitmap bitmapCursor = new(Path.Combine(Application.StartupPath, "img", "cursor.png"));
+
+            if (bitmapCursor != null)
+            {
+                IntPtr cur = bitmapCursor.GetHicon();
+                this.Cursor = new Cursor(cur);
+            }
+
+
+            //centro il loader nel panello
+            this.guna2ProgressIndicator1.Location = new Point(
+                (this.guna2Panel1.Width - this.guna2ProgressIndicator1.Width) / 2,
+                (this.guna2Panel1.Height - this.guna2ProgressIndicator1.Height) / 2
+            );
+
+            this.guna2ProgressIndicator1.Start();
         }
 
 
