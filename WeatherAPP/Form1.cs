@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using WeatherAPP.Properties;
 using static Guna.UI2.WinForms.Suite.Descriptions;
 
 namespace WeatherAPP
@@ -11,9 +12,17 @@ namespace WeatherAPP
             SetProprierties();
         }
 
+        const string STARTING_CITY = "Rome";
 
         private void SetProprierties()
         {
+            this.guna2Panel1.Visible = true;   //nascondo il pannello del loader
+            //centro il pannello del loader
+            this.guna2Panel1.Location = new Point(
+                (this.ClientSize.Width - this.guna2Panel1.Width) / 2,
+                (this.ClientSize.Height - this.guna2Panel1.Height) / 2
+            );
+
 
             //impostare il cursore con controllo eccezzione
             Bitmap bitmapCursor = new(Path.Combine(Application.StartupPath, "img", "cursor.png"));
@@ -31,12 +40,16 @@ namespace WeatherAPP
                 (this.guna2Panel1.Height - this.guna2ProgressIndicator1.Height) / 2
             );
 
-            this.guna2ProgressIndicator1.Start();
+            //this.guna2ProgressIndicator1.Start();
+
+
+
         }
 
 
         private void Loading(bool isForStart)    //metodo per impostare schermata caricamento
         {
+
             //visibile quando start e spento quando stop
             this.guna2Panel1.Visible = isForStart;
 
@@ -155,5 +168,61 @@ namespace WeatherAPP
 #pragma warning restore CS8602
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            //deve prendere dati della citta di base + ora
+            this.panel1.BackColor = Color.FromArgb(100, 0, 0, 0);
+            //avvio schermata caricamento
+            Loading(isForStart: true);
+
+            //uso task per non bloccare l'interfaccia utente
+
+            //blocco caricamento
+            Loading(isForStart: false);
+        }
+
+        private void SetBackground(string currentWeather)
+        {
+            Loading(isForStart: true);
+
+            switch (currentWeather.ToLower())
+            {
+                case "clear":
+                    this.BackgroundImage = null;
+                    break;
+                case "sunny":
+                    this.BackgroundImage = null;
+                    break;
+                case "cloudy":
+                    this.BackgroundImage = null;
+                    break;
+                case "rainy":
+                    this.BackgroundImage = null;
+                    break;
+                case "snowy":
+                    this.BackgroundImage = null;
+                    break;
+                case "storm":
+                    this.BackgroundImage = null;
+                    break;
+                default:
+                    this.BackgroundImage = null;
+                    break;
+            }
+
+            this.BackgroundImageLayout = ImageLayout.Stretch; //<------- occhio !!!!
+
+            //sistemo la trasparenza
+            this.panel1.BackColor = Color.FromArgb(100, 0, 0, 0);
+
+            Loading(isForStart: false);
+        }
+
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            //ricerca citta con controllo se esiste
+
+        }
     }
 }
