@@ -78,9 +78,10 @@
             panel1.Controls.Add(guna2TextBox1);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(lbl_title);
-            panel1.Location = new Point(34, 29);
+            panel1.Location = new Point(27, 23);
+            panel1.Margin = new Padding(2, 2, 2, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1231, 663);
+            panel1.Size = new Size(985, 530);
             panel1.TabIndex = 1;
             // 
             // guna2CustomGradientPanel4
@@ -91,10 +92,11 @@
             guna2CustomGradientPanel4.BorderThickness = 2;
             guna2CustomGradientPanel4.Controls.Add(label5);
             guna2CustomGradientPanel4.CustomizableEdges = customizableEdges1;
-            guna2CustomGradientPanel4.Location = new Point(946, 378);
+            guna2CustomGradientPanel4.Location = new Point(757, 302);
+            guna2CustomGradientPanel4.Margin = new Padding(2, 2, 2, 2);
             guna2CustomGradientPanel4.Name = "guna2CustomGradientPanel4";
             guna2CustomGradientPanel4.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            guna2CustomGradientPanel4.Size = new Size(240, 227);
+            guna2CustomGradientPanel4.Size = new Size(192, 182);
             guna2CustomGradientPanel4.TabIndex = 24;
             // 
             // label5
@@ -102,9 +104,10 @@
             label5.AutoSize = true;
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Arial Rounded MT Bold", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(15, 15);
+            label5.Location = new Point(12, 12);
+            label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(182, 23);
+            label5.Size = new Size(154, 20);
             label5.TabIndex = 9;
             label5.Text = "Venerdì 9 maggio";
             // 
@@ -112,18 +115,20 @@
             // 
             guna2Panel1.Controls.Add(guna2ProgressIndicator1);
             guna2Panel1.CustomizableEdges = customizableEdges4;
-            guna2Panel1.Location = new Point(1010, 631);
+            guna2Panel1.Location = new Point(808, 505);
+            guna2Panel1.Margin = new Padding(2, 2, 2, 2);
             guna2Panel1.Name = "guna2Panel1";
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges5;
-            guna2Panel1.Size = new Size(1185, 651);
+            guna2Panel1.Size = new Size(948, 521);
             guna2Panel1.TabIndex = 0;
             // 
             // guna2ProgressIndicator1
             // 
-            guna2ProgressIndicator1.Location = new Point(536, 244);
+            guna2ProgressIndicator1.Location = new Point(429, 195);
+            guna2ProgressIndicator1.Margin = new Padding(2, 2, 2, 2);
             guna2ProgressIndicator1.Name = "guna2ProgressIndicator1";
             guna2ProgressIndicator1.ShadowDecoration.CustomizableEdges = customizableEdges3;
-            guna2ProgressIndicator1.Size = new Size(135, 135);
+            guna2ProgressIndicator1.Size = new Size(108, 108);
             guna2ProgressIndicator1.TabIndex = 0;
             // 
             // guna2CustomGradientPanel3
@@ -134,10 +139,11 @@
             guna2CustomGradientPanel3.BorderThickness = 2;
             guna2CustomGradientPanel3.Controls.Add(label4);
             guna2CustomGradientPanel3.CustomizableEdges = customizableEdges6;
-            guna2CustomGradientPanel3.Location = new Point(646, 378);
+            guna2CustomGradientPanel3.Location = new Point(517, 302);
+            guna2CustomGradientPanel3.Margin = new Padding(2, 2, 2, 2);
             guna2CustomGradientPanel3.Name = "guna2CustomGradientPanel3";
             guna2CustomGradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges7;
-            guna2CustomGradientPanel3.Size = new Size(240, 227);
+            guna2CustomGradientPanel3.Size = new Size(192, 182);
             guna2CustomGradientPanel3.TabIndex = 25;
             // 
             // label4
@@ -145,9 +151,10 @@
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Arial Rounded MT Bold", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(15, 15);
+            label4.Location = new Point(12, 12);
+            label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(182, 23);
+            label4.Size = new Size(154, 20);
             label4.TabIndex = 9;
             label4.Text = "Venerdì 9 maggio";
             // 
@@ -159,10 +166,11 @@
             guna2CustomGradientPanel2.BorderThickness = 2;
             guna2CustomGradientPanel2.Controls.Add(label3);
             guna2CustomGradientPanel2.CustomizableEdges = customizableEdges8;
-            guna2CustomGradientPanel2.Location = new Point(346, 378);
+            guna2CustomGradientPanel2.Location = new Point(277, 302);
+            guna2CustomGradientPanel2.Margin = new Padding(2, 2, 2, 2);
             guna2CustomGradientPanel2.Name = "guna2CustomGradientPanel2";
             guna2CustomGradientPanel2.ShadowDecoration.CustomizableEdges = customizableEdges9;
-            guna2CustomGradientPanel2.Size = new Size(240, 227);
+            guna2CustomGradientPanel2.Size = new Size(192, 182);
             guna2CustomGradientPanel2.TabIndex = 26;
             // 
             // label3
@@ -170,9 +178,10 @@
             label3.AutoSize = true;
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Arial Rounded MT Bold", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(15, 15);
+            label3.Location = new Point(12, 12);
+            label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(182, 23);
+            label3.Size = new Size(154, 20);
             label3.TabIndex = 9;
             label3.Text = "Venerdì 9 maggio";
             // 
@@ -184,10 +193,11 @@
             guna2CustomGradientPanel1.BorderThickness = 2;
             guna2CustomGradientPanel1.Controls.Add(label2);
             guna2CustomGradientPanel1.CustomizableEdges = customizableEdges10;
-            guna2CustomGradientPanel1.Location = new Point(46, 378);
+            guna2CustomGradientPanel1.Location = new Point(37, 302);
+            guna2CustomGradientPanel1.Margin = new Padding(2, 2, 2, 2);
             guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
             guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges11;
-            guna2CustomGradientPanel1.Size = new Size(240, 227);
+            guna2CustomGradientPanel1.Size = new Size(192, 182);
             guna2CustomGradientPanel1.TabIndex = 23;
             // 
             // label2
@@ -195,9 +205,10 @@
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Arial Rounded MT Bold", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(15, 15);
+            label2.Location = new Point(12, 12);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(182, 23);
+            label2.Size = new Size(154, 20);
             label2.TabIndex = 9;
             label2.Text = "Venerdì 9 maggio";
             // 
@@ -217,11 +228,12 @@
             guna2Button1.Font = new Font("Segoe UI", 9F);
             guna2Button1.ForeColor = Color.Transparent;
             guna2Button1.Image = (Image)resources.GetObject("guna2Button1.Image");
-            guna2Button1.Location = new Point(915, 38);
+            guna2Button1.Location = new Point(732, 30);
+            guna2Button1.Margin = new Padding(2, 2, 2, 2);
             guna2Button1.Name = "guna2Button1";
             guna2Button1.PressedColor = Color.Gray;
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges13;
-            guna2Button1.Size = new Size(39, 33);
+            guna2Button1.Size = new Size(31, 26);
             guna2Button1.TabIndex = 22;
             // 
             // guna2TextBox1
@@ -235,13 +247,13 @@
             guna2TextBox1.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             guna2TextBox1.Font = new Font("Segoe UI", 9F);
             guna2TextBox1.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2TextBox1.Location = new Point(658, 38);
-            guna2TextBox1.Margin = new Padding(4, 5, 4, 5);
+            guna2TextBox1.Location = new Point(526, 30);
+            guna2TextBox1.Margin = new Padding(3, 4, 3, 4);
             guna2TextBox1.Name = "guna2TextBox1";
             guna2TextBox1.PlaceholderText = "Cerca una città ...";
             guna2TextBox1.SelectedText = "";
             guna2TextBox1.ShadowDecoration.CustomizableEdges = customizableEdges15;
-            guna2TextBox1.Size = new Size(259, 33);
+            guna2TextBox1.Size = new Size(207, 26);
             guna2TextBox1.TabIndex = 21;
             // 
             // label1
@@ -249,9 +261,10 @@
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Verdana", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(46, 334);
+            label1.Location = new Point(37, 267);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(117, 22);
+            label1.Size = new Size(93, 18);
             label1.TabIndex = 20;
             label1.Text = "Previsioni:";
             // 
@@ -260,21 +273,23 @@
             lbl_title.AutoSize = true;
             lbl_title.BackColor = Color.Transparent;
             lbl_title.Font = new Font("Gill Sans Ultra Bold", 22F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_title.Location = new Point(994, 27);
+            lbl_title.Location = new Point(795, 22);
+            lbl_title.Margin = new Padding(2, 0, 2, 0);
             lbl_title.Name = "lbl_title";
-            lbl_title.Size = new Size(206, 61);
+            lbl_title.Size = new Size(173, 51);
             lbl_title.TabIndex = 19;
             lbl_title.Text = "METEO";
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImage = Properties.Resources.sunny_background;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1292, 704);
+            ClientSize = new Size(1034, 563);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2, 2, 2, 2);
             Name = "MainForm";
             Text = "Weather App";
             Load += MainForm_Load;
