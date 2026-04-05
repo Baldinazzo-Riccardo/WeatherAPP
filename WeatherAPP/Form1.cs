@@ -16,11 +16,16 @@ namespace WeatherAPP
 
         private void SetProprierties()
         {
-            this.guna2Panel1.Visible = true;   //nascondo il pannello del loader
+            this.pnl_Loading.Size = this.Size;
+
+            SetTransparency();
+
+            this.pnl_Loading.Visible = false;   //nascondo il pannello del loader
+
             //centro il pannello del loader
-            this.guna2Panel1.Location = new Point(
-                (this.ClientSize.Width - this.guna2Panel1.Width) / 2,
-                (this.ClientSize.Height - this.guna2Panel1.Height) / 2
+            this.pnl_Loading.Location = new Point(
+                (this.ClientSize.Width - this.pnl_Loading.Width) / 2,
+                (this.ClientSize.Height - this.pnl_Loading.Height) / 2
             );
 
 
@@ -36,13 +41,13 @@ namespace WeatherAPP
 
             //centro il loader nel panello
             this.guna2ProgressIndicator1.Location = new Point(
-                (this.guna2Panel1.Width - this.guna2ProgressIndicator1.Width) / 2,
-                (this.guna2Panel1.Height - this.guna2ProgressIndicator1.Height) / 2
+                (this.pnl_Loading.Width - this.guna2ProgressIndicator1.Width) / 2,
+                (this.pnl_Loading.Height - this.guna2ProgressIndicator1.Height) / 2
             );
 
             //this.guna2ProgressIndicator1.Start();
 
-
+            lbl_title.Focus();
 
         }
 
@@ -51,7 +56,7 @@ namespace WeatherAPP
         {
 
             //visibile quando start e spento quando stop
-            this.guna2Panel1.Visible = isForStart;
+            this.pnl_Loading.Visible = isForStart;
 
             if (isForStart)
             {
@@ -171,14 +176,15 @@ namespace WeatherAPP
         private void MainForm_Load(object sender, EventArgs e)
         {
             //deve prendere dati della citta di base + ora
-            this.panel1.BackColor = Color.FromArgb(100, 0, 0, 0);
+            SetTransparency();
+
             //avvio schermata caricamento
-            Loading(isForStart: true);
+            //Loading(isForStart: true);
 
             //uso task per non bloccare l'interfaccia utente
 
             //blocco caricamento
-            Loading(isForStart: false);
+            //Loading(isForStart: false);
         }
 
         private void SetBackground(string currentWeather)
@@ -213,7 +219,23 @@ namespace WeatherAPP
             this.BackgroundImageLayout = ImageLayout.Stretch; //<------- occhio !!!!
 
             //sistemo la trasparenza
+            SetTransparency();
+
+            Loading(isForStart: false);
+        }
+
+        private void SetTransparency()  //sistemo la trasparenza
+        {
             this.panel1.BackColor = Color.FromArgb(100, 0, 0, 0);
+            this.pnl_Loading.BackColor = Color.FromArgb(180, 0, 0, 0);
+            this.guna2ProgressIndicator1.BackColor = Color.FromArgb(0, 0, 0, 0);
+        }
+
+        private void LoadData(WeatherData weatherData, AirQualityData airQualityData)
+        {
+            Loading(isForStart: true);
+
+            //carico i dati nella schermata
 
             Loading(isForStart: false);
         }
