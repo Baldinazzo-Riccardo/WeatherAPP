@@ -8,39 +8,39 @@ namespace WeatherAPP
     internal class ConverterWeatherApi
     {
         //coord
-        public Coordinates? Coord { get; set; }
+        public Coordinates? coord { get; set; }
 
         //weather
-        public List<WeatherInfo>? Weather { get; set; }
+        public List<WeatherInfo>? weather { get; set; }
 
         //main
-        public WeatherMain? Main { get; set; }
+        public WeatherMain? main { get; set; }
 
         //dt
-        public long Timestamp { get; set; }
+        public long dt { get; set; }
 
         //timezone
-        public int Timezone { get; set; }
+        public int timezone { get; set; }
     }
 
     public class Coordinates
     {
         //lon
-        public double Longitude { get; set; }
+        public double lon { get; set; }
 
         //lat
-        public double Latitude { get; set; }
+        public double lat { get; set; }
     }
 
     public class WeatherInfo
     {
         //icon
-        public string? Icon { get; set; }
+        public string? icon { get; set; }
     }
 
     public class WeatherMain
     {
         //temp
-        public double Temperature { get; set; }
+        public double temp { get; set; }
     }
 }

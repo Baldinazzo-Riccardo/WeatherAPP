@@ -42,7 +42,7 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            panel1 = new Panel();
+            pnl_data = new Panel();
             guna2CustomGradientPanel4 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             label5 = new Label();
             guna2CustomGradientPanel3 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
@@ -57,7 +57,7 @@
             lbl_title = new Label();
             pnl_Loading = new Panel();
             guna2ProgressIndicator1 = new Guna.UI2.WinForms.Guna2ProgressIndicator();
-            panel1.SuspendLayout();
+            pnl_data.SuspendLayout();
             guna2CustomGradientPanel4.SuspendLayout();
             guna2CustomGradientPanel3.SuspendLayout();
             guna2CustomGradientPanel2.SuspendLayout();
@@ -65,20 +65,20 @@
             pnl_Loading.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // pnl_data
             // 
-            panel1.Controls.Add(guna2CustomGradientPanel4);
-            panel1.Controls.Add(guna2CustomGradientPanel3);
-            panel1.Controls.Add(guna2CustomGradientPanel2);
-            panel1.Controls.Add(guna2CustomGradientPanel1);
-            panel1.Controls.Add(guna2Button1);
-            panel1.Controls.Add(guna2TextBox1);
-            panel1.Controls.Add(label1);
-            panel1.Controls.Add(lbl_title);
-            panel1.Location = new Point(34, 29);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1231, 663);
-            panel1.TabIndex = 1;
+            pnl_data.Controls.Add(guna2CustomGradientPanel4);
+            pnl_data.Controls.Add(guna2CustomGradientPanel3);
+            pnl_data.Controls.Add(guna2CustomGradientPanel2);
+            pnl_data.Controls.Add(guna2CustomGradientPanel1);
+            pnl_data.Controls.Add(guna2Button1);
+            pnl_data.Controls.Add(guna2TextBox1);
+            pnl_data.Controls.Add(label1);
+            pnl_data.Controls.Add(lbl_title);
+            pnl_data.Location = new Point(34, 29);
+            pnl_data.Name = "pnl_data";
+            pnl_data.Size = new Size(1231, 663);
+            pnl_data.TabIndex = 1;
             // 
             // guna2CustomGradientPanel4
             // 
@@ -202,6 +202,7 @@
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges10;
             guna2Button1.Size = new Size(39, 33);
             guna2Button1.TabIndex = 22;
+            guna2Button1.Click += guna2Button1_Click_1;
             // 
             // guna2TextBox1
             // 
@@ -228,6 +229,7 @@
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Verdana", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.PaleTurquoise;
             label1.Location = new Point(46, 334);
             label1.Name = "label1";
             label1.Size = new Size(117, 22);
@@ -239,6 +241,7 @@
             lbl_title.AutoSize = true;
             lbl_title.BackColor = Color.Transparent;
             lbl_title.Font = new Font("Gill Sans Ultra Bold", 22F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_title.ForeColor = Color.PaleTurquoise;
             lbl_title.Location = new Point(994, 27);
             lbl_title.Name = "lbl_title";
             lbl_title.Size = new Size(206, 61);
@@ -267,15 +270,16 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1292, 704);
+            ClientSize = new Size(1323, 730);
             Controls.Add(pnl_Loading);
-            Controls.Add(panel1);
+            Controls.Add(pnl_data);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             Text = "Weather App";
             Load += MainForm_Load;
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            Shown += MainForm_Shown;
+            pnl_data.ResumeLayout(false);
+            pnl_data.PerformLayout();
             guna2CustomGradientPanel4.ResumeLayout(false);
             guna2CustomGradientPanel4.PerformLayout();
             guna2CustomGradientPanel3.ResumeLayout(false);
@@ -290,7 +294,7 @@
 
         #endregion
 
-        private Panel panel1;
+        private Panel pnl_data;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel4;
         private Label label5;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel3;

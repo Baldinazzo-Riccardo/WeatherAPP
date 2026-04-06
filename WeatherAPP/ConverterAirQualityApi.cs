@@ -1,43 +1,40 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace WeatherAPP
 {
     internal class ConverterAirQualityApi
     {
         //coord
-        public Coordinates? Coord { get; set; }
+        public Coordinates? coord { get; set; }
 
         //list
-        public List<AirQualityItem>? Items { get; set; }
+        public List<AirQualityItem>? list { get; set; }
     }
 
     public class AirQualityItem
     {
         //main
-        public AirQualityMain? Main { get; set; }
+        public AirQualityMain? main { get; set; }
 
         //components
-        public AirQualityComponents? Components { get; set; }
+        public AirQualityComponents? components { get; set; }
 
         //dt
-        public long Timestamp { get; set; }
+        public long dt { get; set; }
     }
 
     public class AirQualityMain
     {
         //aqi
-        public int AQI { get; set; }
+        public int aqi { get; set; }
     }
 
     public class AirQualityComponents
     {
         //pm2_5
-        public double PM25 { get; set; }
+        public double pm2_5 { get; set; }
 
         //pm10
-        public double PM10 { get; set; }
+        public double pm10 { get; set; }
     }
 }

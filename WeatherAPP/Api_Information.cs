@@ -7,7 +7,7 @@ namespace WeatherAPP
     internal static class Api_Information
     {
         //informazioni per richieste di api
-        public const string API_KEY = "LA_TUA_API_KEY";
+        public const string API_KEY = "7185f49e692f9145fc688a687eaf2d2f";
 
         public const string CURRENT_WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather";
 
