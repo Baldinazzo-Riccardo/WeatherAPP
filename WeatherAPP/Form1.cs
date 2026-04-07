@@ -39,8 +39,7 @@ namespace WeatherAPP
 
 
             //impostare il cursore con controllo eccezzione
-            Bitmap bitmapCursor = new(Path.Combine(Application.StartupPath, "img", "cursor.png"));
-
+            Bitmap bitmapCursor = Properties.Resources.cursor;
             if (bitmapCursor != null)
             {
                 IntPtr cur = bitmapCursor.GetHicon();
@@ -105,6 +104,7 @@ namespace WeatherAPP
             {
                 Temperature = data.main.temp,
                 CurrentIcon = data.weather[0].icon,
+                CityName = data.name,
                 DateTimeLocal = DateTimeOffset
                     .FromUnixTimeSeconds(data.dt)
                     .ToOffset(TimeSpan.FromSeconds(data.timezone))
@@ -249,43 +249,65 @@ namespace WeatherAPP
 
         private void SetBackground(string currentWeather)
         {
-
-            switch (currentWeather.ToLower())
+            switch (currentWeather)
             {
-                case "clear":
-                    this.BackgroundImage = null;
+                //g: giorno sereno
+                case "01d":
+                    this.BackgroundImage = Properties.Resources.sunny_background;
                     break;
-                case "sunny":
-                    this.BackgroundImage = null;
+                //n: notte serena
+                case "01n":
+                    this.BackgroundImage = Properties.Resources.clear_background;
                     break;
-                case "cloudy":
-                    this.BackgroundImage = null;
+
+                //g: nuvoloso/parzialmente nuvoloso giorno
+                case "02d":
+                case "03d":
+                case "04d":
+                    this.BackgroundImage = Properties.Resources.cloudy_background;
                     break;
-                case "rainy":
-                    this.BackgroundImage = null;
+                //n: nuvoloso/parzialmente nuvoloso notte
+                case "02n":
+                case "03n":
+                case "04n":
+                    this.BackgroundImage = Properties.Resources.cloudy_background;
                     break;
-                case "snowy":
-                    this.BackgroundImage = null;
+
+                //g: pioggia giorno
+                case "09d":
+                case "10d":
+                    this.BackgroundImage = Properties.Resources.rainy_background;
                     break;
-                case "storm":
-                    this.BackgroundImage = null;
+                //n: pioggia notte
+                case "09n":
+                case "10n":
+                    this.BackgroundImage = Properties.Resources.rainy_background;
+                    break;
+
+                //g: neve giorno
+                case "13d":
+                    this.BackgroundImage = Properties.Resources.snowy_background;
+                    break;
+                //n: neve notte
+                case "13n":
+                    this.BackgroundImage = Properties.Resources.snowy_background;
+                    break;
+
+                //g: temporale giorno
+                case "11d":
+                    this.BackgroundImage = Properties.Resources.stormy_background;
+                    break;
+                //n: temporale notte
+                case "11n":
+                    this.BackgroundImage = Properties.Resources.stormy_background;
                     break;
                 default:
-                    this.BackgroundImage = null;
+                    this.BackgroundImage = Properties.Resources.sunny_background;
                     break;
             }
 
-            if (this.BackgroundImage == null)
-            {
-                MessageBox.Show("ERRORE: impossibile trovare lo sfondo !");
-                return;
-            }
-
-            this.BackgroundImageLayout = ImageLayout.Stretch; //<------- occhio !!!!
-
-            //sistemo la trasparenza
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             SetTransparency();
-
         }
 
         private void StartClock(DateTime dateTimeLocal)
@@ -313,16 +335,16 @@ namespace WeatherAPP
 
 
             //gradi - ora attuale - icona clima
-            //lbl_temperature.Text = $"{weatherData.Temperature:F1}°C";
-            //lbl_time.Text = weatherData.DateTimeLocal.ToString("HH:mm");
+            lbl_temperature.Text = $"Temperatura: {weatherData.Temperature:F1}°C";
+            lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
 
             //prende foto da sito
-            //pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";   
-
+            pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";   
+            lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
             //dati inquinamento
-            //lbl_AQI.Text = $"AQI: {airQualityData.AQI}";
-            //lbl_PM25.Text = $"PM2.5: {airQualityData.PM25:F1}";
-            //lbl_PM10.Text = $"PM10: {airQualityData.PM10:F1}";
+            lbl_AQI.Text = $"AQI: {airQualityData.AQI}";
+            lbl_pm25.Text = $"PM2.5: {airQualityData.PM25:F1}";
+            lbl_PM10.Text = $"PM10: {airQualityData.PM10:F1}";
 
 
             Loading(isForStart: false);

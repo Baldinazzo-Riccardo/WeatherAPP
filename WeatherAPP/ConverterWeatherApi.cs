@@ -21,6 +21,8 @@ namespace WeatherAPP
 
         //timezone
         public int timezone { get; set; }
+        //name per label citta
+        public string name { get; set; }
     }
 
     public class Coordinates

@@ -6,6 +6,7 @@ namespace WeatherAPP
 {
     internal class WeatherData  //usato sia per current che per forecast
     {
+        public string CityName { get; set; }
         public double Temperature { get; set; }
         public string? CurrentIcon { get; set; }
         public DateTime DateTimeLocal { get; set; }
