@@ -55,11 +55,11 @@ namespace WeatherAPP
 
             //this.guna2ProgressIndicator1.Start();
 
-            lbl_title.Focus();
+            
 
         }
 
-        private void Loading(bool isForStart)
+        private void Loading(bool isForStart)   //aura camera di commercio
         {
             pnl_Loading.Visible = isForStart;
 
@@ -324,7 +324,7 @@ namespace WeatherAPP
             clockTimer.Tick += (s, e) =>
             {
                 currentCityTime = currentCityTime.AddSeconds(1);
-                //lbl_time.Text = currentCityTime.ToString("HH:mm");
+                lbl_time.Text = currentCityTime.ToString("HH:mm");
             };
             clockTimer.Start();
         }
