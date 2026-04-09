@@ -332,25 +332,47 @@ namespace WeatherAPP
         private void LoadData(WeatherData weatherData, AirQualityData airQualityData)
         {
             Loading(isForStart: true);
-
+            this.pb_weather.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.pb_weather.BackColor = Color.Transparent;
 
             //gradi - ora attuale - icona clima
-            lbl_temperature.Text = $"Temperatura: {weatherData.Temperature:F1}°C";
-            lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
+            this.lbl_temperature.Text = $"Temperatura: {weatherData.Temperature:F1}°C";
+            this.lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
 
             //prende foto da sito
-            pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";   
-            lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
+            this.pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";
+            this.lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
             //dati inquinamento
-            lbl_AQI.Text = $"AQI: {airQualityData.AQI}";
-            lbl_pm25.Text = $"PM2.5: {airQualityData.PM25:F1}";
-            lbl_PM10.Text = $"PM10: {airQualityData.PM10:F1}";
+            this.lbl_AQI.Text = $"AQI: {airQualityData.AQI}";
+            this.lbl_pm25.Text = $"PM2.5: {airQualityData.PM25:F1}";
+            this.lbl_PM10.Text = $"PM10: {airQualityData.PM10:F1}";
 
 
             Loading(isForStart: false);
         }
 
+        private void LoadForecastData()
+        {
+            Loading(isForStart: true);
+            
+            //day 1
+            this.lbl_day1.Text = $"";
+            this.lbl_temperatura_day1.Text = $"Temperatura: {null:F1}°C";
 
+            //day 2
+            this.lbl_day2.Text = $"";
+            this.lbl_temperatura_day2.Text = $"Temperatura: {null:F1}°C";
+
+            //day 3
+            this.lbl_day3.Text = $"";
+            this.lbl_temperatura_day3.Text = $"Temperatura: {null:F1}°C";
+
+            //day 4
+            this.lbl_day4.Text = $"";
+            this.lbl_temperatura_day4.Text = $"Temperatura: {null:F1}°C";
+
+            Loading(isForStart: false);
+        }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
