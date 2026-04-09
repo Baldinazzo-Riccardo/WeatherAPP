@@ -352,21 +352,15 @@ namespace WeatherAPP
             this.pb_weather.SizeMode = PictureBoxSizeMode.StretchImage;
             this.pb_weather.BackColor = Color.Transparent;
 
-            //gradi - ora attuale - icona clima
             this.lbl_temperature.Text = $"{weatherData.Temperature:F1}°C";
             this.lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
 
-            //prende foto da sito
             this.pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";
             this.lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
-            //dati inquinamento
+
             this.lbl_AQI.Text = $"AQI: {airQualityData.AQI}";
             this.lbl_pm25.Text = $"PM 2.5: {airQualityData.PM25:F1}";
             this.lbl_PM10.Text = $"PM 10: {airQualityData.PM10:F1}";
-
-
-
-            //PREVISIONI ------------------------------------------------
 
             this.pb_day1.ImageLocation = $"https://openweathermap.org/img/wn/{forecastData.Day1_Icon}@2x.png";
             this.pb_day2.ImageLocation = $"https://openweathermap.org/img/wn/{forecastData.Day2_Icon}@2x.png";
@@ -383,34 +377,31 @@ namespace WeatherAPP
             this.pb_day3.BackColor = Color.Transparent;
             this.pb_day4.BackColor = Color.Transparent;
 
-            //day 1
             this.lbl_day1.Text = forecastData.Day1_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day1.Text = $"{forecastData.Day1_Temp:F1}°C";
 
-            //day 2
             this.lbl_day2.Text = forecastData.Day2_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day2.Text = $"{forecastData.Day2_Temp:F1}°C";
 
-            //day 3
             this.lbl_day3.Text = forecastData.Day3_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day3.Text = $"{forecastData.Day3_Temp:F1}°C";
 
-            //day 4
             this.lbl_day4.Text = forecastData.Day4_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day4.Text = $"{forecastData.Day4_Temp:F1}°C";
 
+            //salvataggio del record 
+            WeatherRecord record = new()
+            {
+                timestamp = weatherData.DateTimeLocal,
+                temperature = weatherData.Temperature,
+                aqi = airQualityData.AQI,
+                pm25 = airQualityData.PM25,
+                pm10 = airQualityData.PM10
+            };
+
+            JsonManager.AppendRecord(record);
+
             Loading(isForStart: false);
-            //var dati = JsonManager.CaricaDati();
-
-            //// controllo duplicati (stessa data e ora)
-            //bool esiste = dati.Any(d => d.DateTimeLocal == weatherData.DateTimeLocal
-            //                         && d.CityName == weatherData.CityName);
-
-            //if (!esiste)
-            //{
-            //    dati.Add(weatherData);
-            //    JsonManager.SalvaDati(dati);
-            //}
         }
 
 
@@ -460,11 +451,16 @@ namespace WeatherAPP
             }
         }
 
-        private void btnGrafico_Click(object sender, EventArgs e)
+
+        private void guna2Button2_Click(object sender, EventArgs e)//per aprire form
         {
-        //    var dati = JsonManager.CaricaDati();
-        //    FGrafico f = new FGrafico(dati);
-        //    f.Show();
+            //apre form con grafici e dati
+            using (var graphsForm = new GraphsForm())
+            {
+                this.Hide();
+                graphsForm.ShowDialog();
+                this.Show();
+            }
         }
     }
 }
