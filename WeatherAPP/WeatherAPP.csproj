@@ -12,9 +12,11 @@
     <PackageReference Include="Guna.UI2.WinForms" Version="2.0.4.7" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.WinForms" Version="0.9.7.1" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="RestSharp" Version="114.0.0" />
+    <PackageReference Include="ScottPlot.WinForms" Version="5.1.58" />
   </ItemGroup>
 
   <ItemGroup>

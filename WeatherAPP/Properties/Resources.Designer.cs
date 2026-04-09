@@ -93,9 +93,59 @@ namespace WeatherAPP.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Gemini_Generated_Image_9x0dav9x0dav9x0d__1_ {
+            get {
+                object obj = ResourceManager.GetObject("Gemini_Generated_Image_9x0dav9x0dav9x0d (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap notte_nuvolosa {
+            get {
+                object obj = ResourceManager.GetObject("notte-nuvolosa", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap notte_serena {
+            get {
+                object obj = ResourceManager.GetObject("notte-serena", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pioggia_notte {
+            get {
+                object obj = ResourceManager.GetObject("pioggia-notte", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap rainy_background {
             get {
                 object obj = ResourceManager.GetObject("rainy_background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rainy_background1 {
+            get {
+                object obj = ResourceManager.GetObject("rainy_background1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,6 +196,26 @@ namespace WeatherAPP.Properties {
         internal static System.Drawing.Bitmap sunny_background1 {
             get {
                 object obj = ResourceManager.GetObject("sunny_background1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap temporale_notte {
+            get {
+                object obj = ResourceManager.GetObject("temporale-notte", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap temptesta {
+            get {
+                object obj = ResourceManager.GetObject("temptesta", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

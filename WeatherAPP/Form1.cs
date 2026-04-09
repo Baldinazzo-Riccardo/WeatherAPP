@@ -244,7 +244,7 @@ namespace WeatherAPP
 
 
                 LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);
-                
+
 
                 if (weather.CurrentIcon != null)
                 {
@@ -274,31 +274,31 @@ namespace WeatherAPP
                     break;
                 //n: notte serena
                 case "01n":
-                    this.BackgroundImage = Properties.Resources.clear_background;
+                    this.BackgroundImage = Properties.Resources.notte_serena;
                     break;
 
                 //g: nuvoloso/parzialmente nuvoloso giorno
                 case "02d":
                 case "03d":
                 case "04d":
-                    this.BackgroundImage = Properties.Resources.cloudy_background;
+                    this.BackgroundImage = Properties.Resources.Gemini_Generated_Image_9x0dav9x0dav9x0d__1_;
                     break;
                 //n: nuvoloso/parzialmente nuvoloso notte
                 case "02n":
                 case "03n":
                 case "04n":
-                    this.BackgroundImage = Properties.Resources.cloudy_background;
+                    this.BackgroundImage = Properties.Resources.notte_nuvolosa;
                     break;
 
                 //g: pioggia giorno
                 case "09d":
                 case "10d":
-                    this.BackgroundImage = Properties.Resources.rainy_background;
+                    this.BackgroundImage = Properties.Resources.rainy_background1;
                     break;
                 //n: pioggia notte
                 case "09n":
                 case "10n":
-                    this.BackgroundImage = Properties.Resources.rainy_background;
+                    this.BackgroundImage = Properties.Resources.pioggia_notte;
                     break;
 
                 //g: neve giorno
@@ -312,11 +312,11 @@ namespace WeatherAPP
 
                 //g: temporale giorno
                 case "11d":
-                    this.BackgroundImage = Properties.Resources.stormy_background;
+                    this.BackgroundImage = Properties.Resources.temptesta;
                     break;
                 //n: temporale notte
                 case "11n":
-                    this.BackgroundImage = Properties.Resources.stormy_background;
+                    this.BackgroundImage = Properties.Resources.temporale_notte;
                     break;
                 default:
                     this.BackgroundImage = Properties.Resources.sunny_background;
@@ -392,7 +392,7 @@ namespace WeatherAPP
             this.lbl_temperatura_day2.Text = $"{forecastData.Day2_Temp:F1}°C";
 
             //day 3
-            this.lbl_day3.Text = forecastData .Day3_Date.ToString("dddd, dd MMMM");
+            this.lbl_day3.Text = forecastData.Day3_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day3.Text = $"{forecastData.Day3_Temp:F1}°C";
 
             //day 4
@@ -400,6 +400,17 @@ namespace WeatherAPP
             this.lbl_temperatura_day4.Text = $"{forecastData.Day4_Temp:F1}°C";
 
             Loading(isForStart: false);
+            //var dati = JsonManager.CaricaDati();
+
+            //// controllo duplicati (stessa data e ora)
+            //bool esiste = dati.Any(d => d.DateTimeLocal == weatherData.DateTimeLocal
+            //                         && d.CityName == weatherData.CityName);
+
+            //if (!esiste)
+            //{
+            //    dati.Add(weatherData);
+            //    JsonManager.SalvaDati(dati);
+            //}
         }
 
 
@@ -447,6 +458,13 @@ namespace WeatherAPP
             {
                 Loading(false);
             }
+        }
+
+        private void btnGrafico_Click(object sender, EventArgs e)
+        {
+        //    var dati = JsonManager.CaricaDati();
+        //    FGrafico f = new FGrafico(dati);
+        //    f.Show();
         }
     }
 }

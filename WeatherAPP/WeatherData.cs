@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeatherAPP
 {
-    internal class WeatherData  //usato sia per current che per forecast
+    public class WeatherData  //usato sia per current che per forecast
     {
         public string CityName { get; set; }
         public double Temperature { get; set; }
