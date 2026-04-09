@@ -1,5 +1,6 @@
 using Microsoft.VisualBasic.Logging;
 using Newtonsoft.Json;
+using System.DirectoryServices.ActiveDirectory;
 using WeatherAPP.Properties;
 using static Guna.UI2.WinForms.Suite.Descriptions;
 
@@ -55,7 +56,7 @@ namespace WeatherAPP
 
             //this.guna2ProgressIndicator1.Start();
 
-            
+
 
         }
 
@@ -149,7 +150,7 @@ namespace WeatherAPP
 
 
 
-        private async Task<WeatherData> GetForecastWeather(string cityName)
+        private async Task<ForecastData> GetForecastWeather(string cityName)
         {
             string url = $"{Api_Information.FORECAST_WEATHER_URL}" +
                 $"?q={cityName}" +
@@ -166,20 +167,33 @@ namespace WeatherAPP
 
             string json = await apiResponse.Content.ReadAsStringAsync();
 
-            var data = JsonConvert.DeserializeObject<ConverterWeatherApi>(json);
+            var data = JsonConvert.DeserializeObject<ConverterForecastApi>(json);
 
 #pragma warning disable CS8602
 
-            return new WeatherData
+            // ogni 8 elementi = 1 giorno (24h / 3h)
+            var d1 = data.list[8];
+            var d2 = data.list[16];
+            var d3 = data.list[24];
+            var d4 = data.list[32];
+
+            return new ForecastData
             {
-                Temperature = data.main.temp,
-                CurrentIcon = data.weather[0].icon,
-                DateTimeLocal = DateTimeOffset
-                    .FromUnixTimeSeconds(data.dt)
-                    .ToOffset(TimeSpan.FromSeconds(data.timezone))
-                    .DateTime,
-                Latitude = data.coord.lat,
-                Longitude = data.coord.lon,
+                Day1_Date = DateTimeOffset.FromUnixTimeSeconds(d1.dt).DateTime,
+                Day1_Temp = d1.main.temp,
+                Day1_Icon = d1.weather[0].icon,
+
+                Day2_Date = DateTimeOffset.FromUnixTimeSeconds(d2.dt).DateTime,
+                Day2_Temp = d2.main.temp,
+                Day2_Icon = d2.weather[0].icon,
+
+                Day3_Date = DateTimeOffset.FromUnixTimeSeconds(d3.dt).DateTime,
+                Day3_Temp = d3.main.temp,
+                Day3_Icon = d3.weather[0].icon,
+
+                Day4_Date = DateTimeOffset.FromUnixTimeSeconds(d4.dt).DateTime,
+                Day4_Temp = d4.main.temp,
+                Day4_Icon = d4.weather[0].icon,
             };
 #pragma warning restore CS8602
         }
@@ -226,8 +240,11 @@ namespace WeatherAPP
             {
                 WeatherData weather = await GetCurrentWeather(STARTING_CITY);
                 AirQualityData aqi = await GetAirQuality(weather.Latitude, weather.Longitude);
+                ForecastData forecast = await GetForecastWeather(STARTING_CITY);
 
-                LoadData(weatherData: weather, airQualityData: aqi);
+
+                LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);
+                
 
                 if (weather.CurrentIcon != null)
                 {
@@ -329,14 +346,14 @@ namespace WeatherAPP
             clockTimer.Start();
         }
 
-        private void LoadData(WeatherData weatherData, AirQualityData airQualityData)
+        private void LoadData(WeatherData weatherData, AirQualityData airQualityData, ForecastData forecastData)
         {
             Loading(isForStart: true);
             this.pb_weather.SizeMode = PictureBoxSizeMode.StretchImage;
             this.pb_weather.BackColor = Color.Transparent;
 
             //gradi - ora attuale - icona clima
-            this.lbl_temperature.Text = $"Temperatura: {weatherData.Temperature:F1}°C";
+            this.lbl_temperature.Text = $"{weatherData.Temperature:F1}°C";
             this.lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
 
             //prende foto da sito
@@ -344,39 +361,51 @@ namespace WeatherAPP
             this.lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
             //dati inquinamento
             this.lbl_AQI.Text = $"AQI: {airQualityData.AQI}";
-            this.lbl_pm25.Text = $"PM2.5: {airQualityData.PM25:F1}";
-            this.lbl_PM10.Text = $"PM10: {airQualityData.PM10:F1}";
+            this.lbl_pm25.Text = $"PM 2.5: {airQualityData.PM25:F1}";
+            this.lbl_PM10.Text = $"PM 10: {airQualityData.PM10:F1}";
 
 
-            Loading(isForStart: false);
-        }
 
-        private void LoadForecastData()
-        {
-            Loading(isForStart: true);
-            
+            //PREVISIONI ------------------------------------------------
+
+            this.pb_day1.ImageLocation = $"https://openweathermap.org/img/wn/{forecastData.Day1_Icon}@2x.png";
+            this.pb_day2.ImageLocation = $"https://openweathermap.org/img/wn/{forecastData.Day2_Icon}@2x.png";
+            this.pb_day3.ImageLocation = $"https://openweathermap.org/img/wn/{forecastData.Day3_Icon}@2x.png";
+            this.pb_day4.ImageLocation = $"https://openweathermap.org/img/wn/{forecastData.Day4_Icon}@2x.png";
+
+            this.pb_day1.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.pb_day2.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.pb_day3.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.pb_day4.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            this.pb_day1.BackColor = Color.Transparent;
+            this.pb_day2.BackColor = Color.Transparent;
+            this.pb_day3.BackColor = Color.Transparent;
+            this.pb_day4.BackColor = Color.Transparent;
+
             //day 1
-            this.lbl_day1.Text = $"";
-            this.lbl_temperatura_day1.Text = $"Temperatura: {null:F1}°C";
+            this.lbl_day1.Text = forecastData.Day1_Date.ToString("dddd, dd MMMM");
+            this.lbl_temperatura_day1.Text = $"{forecastData.Day1_Temp:F1}°C";
 
             //day 2
-            this.lbl_day2.Text = $"";
-            this.lbl_temperatura_day2.Text = $"Temperatura: {null:F1}°C";
+            this.lbl_day2.Text = forecastData.Day2_Date.ToString("dddd, dd MMMM");
+            this.lbl_temperatura_day2.Text = $"{forecastData.Day2_Temp:F1}°C";
 
             //day 3
-            this.lbl_day3.Text = $"";
-            this.lbl_temperatura_day3.Text = $"Temperatura: {null:F1}°C";
+            this.lbl_day3.Text = forecastData .Day3_Date.ToString("dddd, dd MMMM");
+            this.lbl_temperatura_day3.Text = $"{forecastData.Day3_Temp:F1}°C";
 
             //day 4
-            this.lbl_day4.Text = $"";
-            this.lbl_temperatura_day4.Text = $"Temperatura: {null:F1}°C";
+            this.lbl_day4.Text = forecastData.Day4_Date.ToString("dddd, dd MMMM");
+            this.lbl_temperatura_day4.Text = $"{forecastData.Day4_Temp:F1}°C";
 
             Loading(isForStart: false);
         }
+
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            this.lbl_title.Focus();
+            this.lbl_city.Focus();
         }
 
         private async void guna2Button1_Click_1(object sender, EventArgs e)
@@ -399,8 +428,9 @@ namespace WeatherAPP
             {
                 WeatherData weather = await GetCurrentWeather(city);
                 AirQualityData aqi = await GetAirQuality(weather.Latitude, weather.Longitude);
+                ForecastData forecast = await GetForecastWeather(city);
 
-                LoadData(weatherData: weather, airQualityData: aqi);
+                LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);
 
                 if (weather.CurrentIcon != null)
                 {
