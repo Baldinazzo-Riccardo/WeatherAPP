@@ -60,7 +60,7 @@ namespace WeatherAPP
 
         }
 
-        private void Loading(bool isForStart)  
+        private void Loading(bool isForStart)
         {
             pnl_Loading.Visible = isForStart;
 
@@ -360,7 +360,7 @@ namespace WeatherAPP
 
             this.lbl_temperature.Text = $"{weatherData.Temperature:F1}°C";
             this.lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
-            
+
             this.pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";
             this.lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
 
@@ -397,14 +397,16 @@ namespace WeatherAPP
             //salvataggio del record, con i dati attuali, in un file JSON per poterli visualizzare nei grafici
             WeatherRecord record = new()
             {
+                city = weatherData.CityName,
                 timestamp = weatherData.DateTimeLocal,
                 temperature = weatherData.Temperature,
                 aqi = airQualityData.AQI,
                 pm25 = airQualityData.PM25,
                 pm10 = airQualityData.PM10
             };
-
-            JsonManager.AppendRecord(record);//aggiunge il record al file JSON
+            JsonManager.AppendToday(record);
+            JsonManager.AppendForecast(forecastData, airQualityData.AQI, airQualityData.PM25, airQualityData.PM10);
+            //aggiunge il record al file JSON
 
             Loading(isForStart: false);
         }

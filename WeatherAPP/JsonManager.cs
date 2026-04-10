@@ -12,33 +12,66 @@ namespace WeatherAPP
             return Path.Combine(Application.StartupPath, "Data", "weather_history.json");
         }
 
+
         public static List<WeatherRecord> Load()
         {
             string path = GetPath();
 
             if (!File.Exists(path))
-                return new List<WeatherRecord>();
+                return new List<WeatherRecord>();//ritorna lista vuota
 
             string json = File.ReadAllText(path);
             return JsonConvert.DeserializeObject<List<WeatherRecord>>(json) ?? new List<WeatherRecord>();
         }
-
-        public static void AppendRecord(WeatherRecord record)
+        public static void AppendToday(WeatherRecord record)
         {
-            if (!string.Equals(record.city, "Vicenza", StringComparison.OrdinalIgnoreCase))
-                return;
+            var list = Load();//carica i dati esistenti
 
-            string path = GetPath();
-            var list = Load();
+            list.RemoveAll(r => r.timestamp.Date == record.timestamp.Date);//rimuove eventuali record con la stessa data
 
-            list.Add(record);
+            list.Add(record);//aggiunge il nuovo record
 
-            //solo gli ultimi 15 giorni
-            DateTime cutoff = DateTime.Now.AddDays(-15);//oggi meno 15gg
-            list = list.Where(r => r.timestamp >= cutoff).ToList();//prendo solo quelli degli ultimi 15 giorni, data>cutoff
+            Save(list);
+        }
+        public static void AppendForecast(ForecastData f, double aqi, double pm25, double pm10)
+        {
+            var list = Load();//carica i dati esistenti
 
-            string output = JsonConvert.SerializeObject(list, Formatting.Indented);
-            File.WriteAllText(path, output);
+            var forecasts = new[]//array di tuple con le date e le temperature dei 4 giorni
+            {
+                (f.Day1_Date, f.Day1_Temp),
+                (f.Day2_Date, f.Day2_Temp),
+                (f.Day3_Date, f.Day3_Temp),
+                (f.Day4_Date, f.Day4_Temp),
+            };
+            //elimina eventuali duplicati e aggiunge i nuovi record come previsione
+            foreach (var (date, temp) in forecasts)
+            {
+                list.RemoveAll(r => r.timestamp.Date == date.Date);
+
+                list.Add(new WeatherRecord
+                {
+                    city = "Provincia di Vicenza",
+                    timestamp = date,
+                    temperature = temp,
+                    aqi = aqi,//sara 3 perche api fornisce valori solo per giorno stesso
+                    pm25 = pm25,
+                    pm10 = pm10
+                });
+            }
+
+            Save(list);
+        }
+
+        private static void Save(List<WeatherRecord> list)
+        {
+            //ordina i record per data e li salva in formato JSON con indentazione
+            string output = JsonConvert.SerializeObject(
+                list.OrderBy(r => r.timestamp),
+                Formatting.Indented
+            );
+
+            File.WriteAllText(GetPath(), output);
         }
     }
 }

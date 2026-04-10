@@ -20,7 +20,7 @@ namespace WeatherAPP
             hideallplots();
             loadhistoryandplot();
         }
-
+        //converte ARGB in ScottPlot.Color perche ScottPlot usa un formato diverso da System.Drawing.Color
         private ScottPlot.Color col(uint argb) =>
             ScottPlot.Color.FromARGB(argb);
 
@@ -33,7 +33,7 @@ namespace WeatherAPP
             if (value <= 4) return col(0xFFFF0000);
             return col(0xFF8F3F97);
         }
-
+        //collega i pulsanti ai ripsettivi grafici
         private void sethandlers()
         {
             btn_temp.Click += (s, e) => showplot(plot_temp, btn_temp);
@@ -42,7 +42,7 @@ namespace WeatherAPP
             btn_corr.Click += (s, e) => showplot(plot_corr, btn_corr);
             btn_close.Click += (s, e) => Close();
         }
-
+        //nasconde tutti i grafici
         private void hideallplots()
         {
             plot_temp.Visible = false;
@@ -50,21 +50,21 @@ namespace WeatherAPP
             plot_pm.Visible = false;
             plot_corr.Visible = false;
         }
-
+        //mostra un grafico ed evidenzia il pulsante selezionato    
         private void showplot(FormsPlot target, Button tab)
         {
             hideallplots();
             target.Visible = true;
-
+            //resetta colore pulsnati
             var basecolor = System.Drawing.Color.FromArgb(255, 60, 60, 60);
             btn_temp.BackColor = basecolor;
             btn_aqi.BackColor = basecolor;
             btn_pm.BackColor = basecolor;
             btn_corr.BackColor = basecolor;
-
+            //colore evidenziato
             tab.BackColor = System.Drawing.Color.FromArgb(255, 80, 80, 80);
         }
-
+        //estrae i dati dal json e fa grafici
         private void loadhistoryandplot()
         {
             string path = Path.Combine(Application.StartupPath, "Data", "weather_history.json");
@@ -83,36 +83,38 @@ namespace WeatherAPP
                 MessageBox.Show("Il file JSON è vuoto.");
                 return;
             }
-
+            //ordina i record per data 
             history = history.OrderBy(h => h.timestamp).ToList();
-
+            //convenrte in array per essere compatibile con scottplot
             double[] xs = history.Select(h => h.timestamp.ToOADate()).ToArray();
+            //prende i valori
             double[] temps = history.Select(h => h.temperature).ToArray();
             double[] aqi = history.Select(h => (double)h.aqi).ToArray();
             double[] pm25 = history.Select(h => h.pm25).ToArray();
             double[] pm10 = history.Select(h => h.pm10).ToArray();
-
+            //costruisce i grafici
             BuildTemperature(xs, temps);
             BuildAqi(xs, aqi);
             BuildPm(xs, pm25, pm10);
             BuildCorrelation(xs, temps, aqi);
-
+            //di default viene mostrato il grafico della temperatura
             showplot(plot_temp, btn_temp);
         }
 
         // temperatura nel tempo
         private void BuildTemperature(double[] xs, double[] temps)
         {
-            plot_temp.Plot.Clear();
-
-            var line = plot_temp.Plot.Add.Scatter(xs, temps);
+            plot_temp.Plot.Clear();//pulisce il grafico prima di disegnare
+            //scatter crea la linea con i punti collegati
+            var line = plot_temp.Plot.Add.Scatter(xs, temps);//aggiunge una linea con i dati di temperatura
             line.Color = col(0xFF1E90FF);
             line.LineWidth = 2;
             line.MarkerSize = 6;
             line.LegendText = "Temperatura (°C)";
 
-            plot_temp.Plot.Axes.DateTimeTicksBottom();
-            plot_temp.Plot.ShowLegend(Alignment.UpperRight);
+            plot_temp.Plot.Axes.DateTimeTicksBottom();//formatta l'asse x come data
+
+            plot_temp.Plot.ShowLegend(Alignment.UpperRight);//mostra legenda
             plot_temp.Plot.Title("Temperatura nel tempo");
             plot_temp.Plot.YLabel("°C");
             plot_temp.Plot.XLabel("Data");
@@ -123,13 +125,13 @@ namespace WeatherAPP
         private void BuildAqi(double[] xs, double[] aqi)
         {
             plot_aqi.Plot.Clear();
-
+            //per ogni punto AQI crea una barra colorata in base al valore
             for (int i = 0; i < xs.Length; i++)
             {
                 var bar = plot_aqi.Plot.Add.Bar(xs[i], aqi[i]);
                 bar.Color = aqicolor(aqi[i]);
             }
-
+            //aggiunge legenda manuale con i colori e i livelli di AQI
             plot_aqi.Plot.Add.Annotation(
                 "■ 1 Buono  ■ 2 Discreto  ■ 3 Moderato  ■ 4 Scadente  ■ 5 Pessimo",
                 Alignment.LowerRight);
@@ -146,8 +148,8 @@ namespace WeatherAPP
         {
             plot_pm.Plot.Clear();
 
-            double offset = 0.15;
-
+            double offset = 0.15;//per separare le barre
+            //per ogni punto crea due barre affiancate, una per PM2.5 e una per PM10, con colori diversi
             for (int i = 0; i < xs.Length; i++)
             {
                 var b25 = plot_pm.Plot.Add.Bar(xs[i] - offset, pm25[i]);
@@ -157,12 +159,12 @@ namespace WeatherAPP
                 b10.Color = col(0xFFE03030);
             }
 
-            var soglia25 = plot_pm.Plot.Add.HorizontalLine(15);
+            var soglia25 = plot_pm.Plot.Add.HorizontalLine(15);//soglia per PM2.5
             soglia25.Color = col(0xAAFFA500);
             soglia25.LineWidth = 1.5f;
             soglia25.LinePattern = LinePattern.Dashed;
 
-            var soglia10 = plot_pm.Plot.Add.HorizontalLine(45);
+            var soglia10 = plot_pm.Plot.Add.HorizontalLine(45);//soglia per PM10
             soglia10.Color = col(0xAAE03030);
             soglia10.LineWidth = 1.5f;
             soglia10.LinePattern = LinePattern.Dashed;
@@ -202,6 +204,7 @@ namespace WeatherAPP
             plot_corr.Plot.Axes.SetLimitsY(0, 6);
 
             double r = pearson(temps, aqi);
+            //valuta la forza della correlazione in base al valore di r
             string strength = Math.Abs(r) >= 0.7 ? "forte" :
                               Math.Abs(r) >= 0.4 ? "moderata" : "debole";
 
@@ -214,6 +217,7 @@ namespace WeatherAPP
 
         private static double[] lineartrend(double[] x, double[] y)
         {
+            //
             double mx = x.Average();
             double my = y.Average();
             double num = x.Zip(y, (xi, yi) => (xi - mx) * (yi - my)).Sum();
@@ -224,6 +228,9 @@ namespace WeatherAPP
 
         private static double pearson(double[] x, double[] y)
         {
+            //calcola il coefficiente di correlazione di Pearson tra due serie di dati x e y
+            // Il valore restituito è compreso tra -1 e 1, dove 1 indica una correlazione positiva perfetta,
+            // -1 una correlazione negativa perfetta e 0 nessuna correlazione lineare
             if (x.Length < 2) return 0;
             double mx = x.Average();
             double my = y.Average();
