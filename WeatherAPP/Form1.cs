@@ -16,7 +16,7 @@ namespace WeatherAPP
 
         const string STARTING_CITY = "Vicenza";
         DateTime currentCityTime;
-        System.Windows.Forms.Timer? clockTimer;
+        System.Windows.Forms.Timer? clockTimer;//timer per aggiornare l'orario ogni secondo
 
         private void SetProprierties()
         {
@@ -60,21 +60,21 @@ namespace WeatherAPP
 
         }
 
-        private void Loading(bool isForStart)   //aura camera di commercio
+        private void Loading(bool isForStart)  
         {
             pnl_Loading.Visible = isForStart;
 
             if (isForStart)
             {
-                guna2ProgressIndicator1.Start();
+                guna2ProgressIndicator1.Start();//se true mostra la rotellina che carica
             }
             else
             {
-                guna2ProgressIndicator1.Stop();
+                guna2ProgressIndicator1.Stop();//se false ferma la rotellina
             }
 
 
-            Application.DoEvents();
+            Application.DoEvents();//aggiorna l'interfccia durante il caricamento, altrimenti si blocca tutto e non si vede nulla
         }
 
         //-----     TASK PER PRENDERE DATI DA API    ------
@@ -83,11 +83,11 @@ namespace WeatherAPP
         {
             string url = $"{Api_Information.CURRENT_WEATHER_URL}" +
                 $"?q={cityName}" +
-                $"&appid={Api_Information.API_KEY}&units=metric";
+                $"&appid={Api_Information.API_KEY}&units=metric";//costruisce il link per la richiesta API, con i parametri necessari (città, chiave API)
 
 
-            using HttpClient httpClient = new();
-            HttpResponseMessage apiResponse = await httpClient.GetAsync(url);
+            using HttpClient httpClient = new();//crea un'istanza di HttpClient per fare la richiesta API
+            HttpResponseMessage apiResponse = await httpClient.GetAsync(url);//fa la richiesta API e aspetta la risposta
 
             //controlla se è possibile e gestisce errori
             if (!isAPIAvailable(apiResponse))
@@ -95,17 +95,19 @@ namespace WeatherAPP
                 throw new Exception("ERRORE: richiesta API fallita !");
             }
 
-            string json = await apiResponse.Content.ReadAsStringAsync();
+            string json = await apiResponse.Content.ReadAsStringAsync();//legge il contenuto della risposta API come stringa JSON
 
-            var data = JsonConvert.DeserializeObject<ConverterWeatherApi>(json);
+            var data = JsonConvert.DeserializeObject<ConverterWeatherApi>(json);//deserializza la stringa JSON in un oggetto ConverterWeatherApi
 
 #pragma warning disable CS8602
 
-            return new WeatherData
+            return new WeatherData//crea un nuovo oggetto WeatherData con i dati deserializzati
             {
                 Temperature = data.main.temp,
                 CurrentIcon = data.weather[0].icon,
                 CityName = data.name,
+                //converte il timestamp in un oggetto DateTimeOffset,
+                //poi lo converte in un oggetto DateTime locale usando l'offset del fuso orario restituito dall'API
                 DateTimeLocal = DateTimeOffset
                     .FromUnixTimeSeconds(data.dt)
                     .ToOffset(TimeSpan.FromSeconds(data.timezone))
@@ -119,6 +121,7 @@ namespace WeatherAPP
 
         private async Task<AirQualityData> GetAirQuality(double latitude, double longitude)
         {
+            //stessa logica di GetCurrentWeather ma con parametri diversi,per l'aria
             string url = $"{Api_Information.AIR_QUALITY_URL}" +
                 $"?lat={latitude}" +
                 $"&lon={longitude}" +
@@ -152,6 +155,7 @@ namespace WeatherAPP
 
         private async Task<ForecastData> GetForecastWeather(string cityName)
         {
+            //classe per le previsioni di 4gg
             string url = $"{Api_Information.FORECAST_WEATHER_URL}" +
                 $"?q={cityName}" +
                 $"&appid={Api_Information.API_KEY}&units=metric";
@@ -200,6 +204,7 @@ namespace WeatherAPP
 
         private bool isAPIAvailable(HttpResponseMessage apiResponse)
         {
+            //controlla se la risposta API è valida e gestisce errori specifici come città non trovata o chiave API non valida
             if (apiResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 MessageBox.Show("ERRORE: città non trovata !");
@@ -233,25 +238,25 @@ namespace WeatherAPP
             //deve prendere dati della citta di base + ora
             SetTransparency();
 
-            Loading(true);
+            Loading(true);//mostra il loader durante il caricamento dei dati iniziali
 
 
             try
             {
-                WeatherData weather = await GetCurrentWeather(STARTING_CITY);
+                WeatherData weather = await GetCurrentWeather(STARTING_CITY);//prende i dati meteo della città di partenza ecc.
                 AirQualityData aqi = await GetAirQuality(weather.Latitude, weather.Longitude);
                 ForecastData forecast = await GetForecastWeather(STARTING_CITY);
 
 
-                LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);
+                LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);//carica i dati nella UI
 
 
-                if (weather.CurrentIcon != null)
+                if (weather.CurrentIcon != null)//imposta lo sfondo in base al meteo attuale
                 {
                     SetBackground(currentWeather: weather.CurrentIcon);
                 }
 
-                StartClock(weather.DateTimeLocal);
+                StartClock(weather.DateTimeLocal);//avvia l'orologio con l'ora locale della città
             }
             catch (Exception ex)
             {
@@ -259,7 +264,7 @@ namespace WeatherAPP
             }
             finally
             {
-                Loading(false);
+                Loading(false);//nasconde il loader dopo aver caricato i dati
             }
         }
 
@@ -329,16 +334,16 @@ namespace WeatherAPP
 
         private void StartClock(DateTime dateTimeLocal)
         {
-            currentCityTime = dateTimeLocal;
+            currentCityTime = dateTimeLocal;//imposta l'ora locale della città come ora iniziale
 
-            if (clockTimer != null)
+            if (clockTimer != null)//se il timer esiste già, lo ferma e lo elimina per evitare timer multipli
             {
                 clockTimer.Stop();
                 clockTimer.Dispose();
             }
 
-            clockTimer = new System.Windows.Forms.Timer { Interval = 1000 };
-            clockTimer.Tick += (s, e) =>
+            clockTimer = new System.Windows.Forms.Timer { Interval = 1000 };//crea un nuovo timer che scatta ogni secondo 
+            clockTimer.Tick += (s, e) =>//ogni volta che il timer scatta, aggiorna l'ora aggiungendo un secondo all'ora attuale della città 
             {
                 currentCityTime = currentCityTime.AddSeconds(1);
                 lbl_time.Text = currentCityTime.ToString("HH:mm");
@@ -348,13 +353,14 @@ namespace WeatherAPP
 
         private void LoadData(WeatherData weatherData, AirQualityData airQualityData, ForecastData forecastData)
         {
+            //carica i dati nella UI, impostando le etichette e le immagini in base ai dati ricevuti dalle API
             Loading(isForStart: true);
             this.pb_weather.SizeMode = PictureBoxSizeMode.StretchImage;
             this.pb_weather.BackColor = Color.Transparent;
 
             this.lbl_temperature.Text = $"{weatherData.Temperature:F1}°C";
             this.lbl_time.Text = "Ora: " + weatherData.DateTimeLocal.ToString("HH:mm");
-
+            
             this.pb_weather.ImageLocation = $"https://openweathermap.org/img/wn/{weatherData.CurrentIcon}@2x.png";
             this.lbl_city.Text = $"Previsioni Città: {weatherData.CityName}";
 
@@ -376,7 +382,6 @@ namespace WeatherAPP
             this.pb_day2.BackColor = Color.Transparent;
             this.pb_day3.BackColor = Color.Transparent;
             this.pb_day4.BackColor = Color.Transparent;
-
             this.lbl_day1.Text = forecastData.Day1_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day1.Text = $"{forecastData.Day1_Temp:F1}°C";
 
@@ -389,7 +394,7 @@ namespace WeatherAPP
             this.lbl_day4.Text = forecastData.Day4_Date.ToString("dddd, dd MMMM");
             this.lbl_temperatura_day4.Text = $"{forecastData.Day4_Temp:F1}°C";
 
-            //salvataggio del record 
+            //salvataggio del record, con i dati attuali, in un file JSON per poterli visualizzare nei grafici
             WeatherRecord record = new()
             {
                 timestamp = weatherData.DateTimeLocal,
@@ -399,7 +404,7 @@ namespace WeatherAPP
                 pm10 = airQualityData.PM10
             };
 
-            JsonManager.AppendRecord(record);
+            JsonManager.AppendRecord(record);//aggiunge il record al file JSON
 
             Loading(isForStart: false);
         }
@@ -407,7 +412,7 @@ namespace WeatherAPP
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            this.lbl_city.Focus();
+            this.lbl_city.Focus();//imposta il focus sulla casella di testo della città all'avvio del form
         }
 
         private async void guna2Button1_Click_1(object sender, EventArgs e)
@@ -428,11 +433,11 @@ namespace WeatherAPP
 
             try
             {
-                WeatherData weather = await GetCurrentWeather(city);
+                WeatherData weather = await GetCurrentWeather(city);//prende i dati meteo della città inserita ecc.
                 AirQualityData aqi = await GetAirQuality(weather.Latitude, weather.Longitude);
                 ForecastData forecast = await GetForecastWeather(city);
 
-                LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);
+                LoadData(weatherData: weather, airQualityData: aqi, forecastData: forecast);//carica i dati nella UI
 
                 if (weather.CurrentIcon != null)
                 {

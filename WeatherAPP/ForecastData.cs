@@ -6,6 +6,7 @@ namespace WeatherAPP
 {
     internal class ForecastData
     {
+        //classe che contiene le previsioni per i successivi 4 giorni
         public DateTime Day1_Date { get; set; }
         public double Day1_Temp { get; set; }
         public string? Day1_Icon { get; set; }

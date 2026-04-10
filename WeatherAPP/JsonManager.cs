@@ -31,8 +31,8 @@ namespace WeatherAPP
             list.Add(record);
 
             //solo gli ultimi 15 giorni
-            DateTime cutoff = DateTime.Now.AddDays(-15);
-            list = list.Where(r => r.timestamp >= cutoff).ToList();
+            DateTime cutoff = DateTime.Now.AddDays(-15);//oggi meno 15gg
+            list = list.Where(r => r.timestamp >= cutoff).ToList();//prendo solo quelli degli ultimi 15 giorni, data>cutoff
 
             string output = JsonConvert.SerializeObject(list, Formatting.Indented);
             File.WriteAllText(path, output);

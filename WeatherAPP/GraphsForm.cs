@@ -21,22 +21,22 @@ namespace WeatherAPP
             loadhistoryandplot();
         }
 
-        // converte un int argb in colore scottplot
+        // converte un int argb in colore scottplot perche usa formato diverso rispetto a System.Drawing.Color
         private ScottPlot.Color col(uint argb)
         {
             return ScottPlot.Color.FromARGB(argb);
         }
 
         private void sethandlers()
-        {
-            btn_temp.Click += (s, e) => showplot(plot_temp, btn_temp);
+        {//cpllega i bottoni ai grafici
+            btn_temp.Click += (s, e) => showplot(plot_temp, btn_temp);//quando clicchi appare quel grafico
             btn_aqi.Click += (s, e) => showplot(plot_aqi, btn_aqi);
             btn_pm.Click += (s, e) => showplot(plot_pm, btn_pm);
             btn_corr.Click += (s, e) => showplot(plot_corr, btn_corr);
             btn_close.Click += (s, e) => Close();
         }
 
-        private void hideallplots()
+        private void hideallplots()//nasconde tutti i grafici
         {
             plot_temp.Visible = false;
             plot_aqi.Visible = false;
@@ -44,18 +44,18 @@ namespace WeatherAPP
             plot_corr.Visible = false;
         }
 
-        private void showplot(FormsPlot target, Button tab)
+        private void showplot(FormsPlot target, Button tab)//mostra un singolo grafico
         {
             hideallplots();
             target.Visible = true;
 
-            var basecolor = System.Drawing.Color.FromArgb(255, 60, 60, 60);
+            var basecolor = System.Drawing.Color.FromArgb(255, 60, 60, 60);//colore di base dei bottoni
             btn_temp.BackColor = basecolor;
             btn_aqi.BackColor = basecolor;
             btn_pm.BackColor = basecolor;
             btn_corr.BackColor = basecolor;
 
-            tab.BackColor = System.Drawing.Color.FromArgb(255, 80, 80, 80);
+            tab.BackColor = System.Drawing.Color.FromArgb(255, 80, 80, 80);//colore del bottone attivo
         }
 
         private void loadhistoryandplot()
@@ -77,19 +77,19 @@ namespace WeatherAPP
                 return;
             }
 
-            history = history.OrderBy(h => h.timestamp).ToList();
+            history = history.OrderBy(h => h.timestamp).ToList();//ordino per data crescente
 
-            double[] xs = history.Select(h => h.timestamp.ToOADate()).ToArray();
-            double[] temps = history.Select(h => h.temperature).ToArray();
-            double[] aqi = history.Select(h => h.aqi).ToArray();
+            double[] xs = history.Select(h => h.timestamp.ToOADate()).ToArray();//converto le date in formato numerico per scottplot
+            double[] temps = history.Select(h => h.temperature).ToArray();//estraggo i dati in array per scottplot
+            double[] aqi = history.Select(h => h.aqi).ToArray();    
             double[] pm25 = history.Select(h => h.pm25).ToArray();
             double[] pm10 = history.Select(h => h.pm10).ToArray();
 
             // temperatura
             plot_temp.Plot.Clear();
             var t = plot_temp.Plot.Add.Scatter(xs, temps);
-            t.Color = col(4280193279); // dodgerblue
-            t.LineWidth = 2;
+            t.Color = col(4280193279); // dodgerblue colore
+            t.LineWidth = 2;//spessore linea
             plot_temp.Plot.Axes.DateTimeTicksBottom();
             plot_temp.Plot.Title("temperatura ultimi 15 giorni");
             plot_temp.Plot.YLabel("°c");

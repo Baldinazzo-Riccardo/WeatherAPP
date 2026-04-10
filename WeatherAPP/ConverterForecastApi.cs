@@ -34,7 +34,7 @@ namespace WeatherAPP
     public class ForecastWeather
     {
         //icon
-        public string? icon { get; set; }
+        public string? icon { get; set; }//es "01d"
     }
 
     public class ForecastCity
@@ -43,7 +43,7 @@ namespace WeatherAPP
         public string? name { get; set; }
 
         //timezone
-        public int timezone { get; set; }
+        public int timezone { get; set; }//orario locale della citta in secondi rispetto a UTC
     }
 
 }
