@@ -33,36 +33,7 @@ namespace WeatherAPP
 
             Save(list);
         }
-        public static void AppendForecast(ForecastData f, double aqi, double pm25, double pm10)
-        {
-            var list = Load();//carica i dati esistenti
-
-            var forecasts = new[]//array di tuple con le date e le temperature dei 4 giorni
-            {
-                (f.Day1_Date, f.Day1_Temp),
-                (f.Day2_Date, f.Day2_Temp),
-                (f.Day3_Date, f.Day3_Temp),
-                (f.Day4_Date, f.Day4_Temp),
-            };
-            //elimina eventuali duplicati e aggiunge i nuovi record come previsione
-            foreach (var (date, temp) in forecasts)
-            {
-                list.RemoveAll(r => r.timestamp.Date == date.Date);
-
-                list.Add(new WeatherRecord
-                {
-                    city = "Provincia di Vicenza",
-                    timestamp = date,
-                    temperature = temp,
-                    aqi = aqi,//sara 3 perche api fornisce valori solo per giorno stesso
-                    pm25 = pm25,
-                    pm10 = pm10
-                });
-            }
-
-            Save(list);
-        }
-
+      
         private static void Save(List<WeatherRecord> list)
         {
             //ordina i record per data e li salva in formato JSON con indentazione

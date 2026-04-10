@@ -405,7 +405,7 @@ namespace WeatherAPP
                 pm10 = airQualityData.PM10
             };
             JsonManager.AppendToday(record);
-            JsonManager.AppendForecast(forecastData, airQualityData.AQI, airQualityData.PM25, airQualityData.PM10);
+            //JsonManager.AppendForecast(forecastData, airQualityData.AQI, airQualityData.PM25, airQualityData.PM10);
             //aggiunge il record al file JSON
 
             Loading(isForStart: false);

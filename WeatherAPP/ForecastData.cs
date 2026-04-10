@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeatherAPP
 {
-    internal class ForecastData
+    public class ForecastData
     {
         //classe che contiene le previsioni per i successivi 4 giorni
         public DateTime Day1_Date { get; set; }
