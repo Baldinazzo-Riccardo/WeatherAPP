@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using ScottPlot;
 using ScottPlot.WinForms;
-using SkiaSharp;
+using ScottPlot.Plottables;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace WeatherAPP
 {
@@ -21,22 +21,29 @@ namespace WeatherAPP
             loadhistoryandplot();
         }
 
-        // converte un int argb in colore scottplot perche usa formato diverso rispetto a System.Drawing.Color
-        private ScottPlot.Color col(uint argb)
+        private ScottPlot.Color col(uint argb) =>
+            ScottPlot.Color.FromARGB(argb);
+
+        // colore barra AQI in base al livello
+        private ScottPlot.Color aqicolor(double value)
         {
-            return ScottPlot.Color.FromARGB(argb);
+            if (value <= 1) return col(0xFF00E400);
+            if (value <= 2) return col(0xFFFFFF00);
+            if (value <= 3) return col(0xFFFF7E00);
+            if (value <= 4) return col(0xFFFF0000);
+            return col(0xFF8F3F97);
         }
 
         private void sethandlers()
-        {//cpllega i bottoni ai grafici
-            btn_temp.Click += (s, e) => showplot(plot_temp, btn_temp);//quando clicchi appare quel grafico
+        {
+            btn_temp.Click += (s, e) => showplot(plot_temp, btn_temp);
             btn_aqi.Click += (s, e) => showplot(plot_aqi, btn_aqi);
             btn_pm.Click += (s, e) => showplot(plot_pm, btn_pm);
             btn_corr.Click += (s, e) => showplot(plot_corr, btn_corr);
             btn_close.Click += (s, e) => Close();
         }
 
-        private void hideallplots()//nasconde tutti i grafici
+        private void hideallplots()
         {
             plot_temp.Visible = false;
             plot_aqi.Visible = false;
@@ -44,18 +51,18 @@ namespace WeatherAPP
             plot_corr.Visible = false;
         }
 
-        private void showplot(FormsPlot target, Button tab)//mostra un singolo grafico
+        private void showplot(FormsPlot target, Button tab)
         {
             hideallplots();
             target.Visible = true;
 
-            var basecolor = System.Drawing.Color.FromArgb(255, 60, 60, 60);//colore di base dei bottoni
+            var basecolor = System.Drawing.Color.FromArgb(255, 60, 60, 60);
             btn_temp.BackColor = basecolor;
             btn_aqi.BackColor = basecolor;
             btn_pm.BackColor = basecolor;
             btn_corr.BackColor = basecolor;
 
-            tab.BackColor = System.Drawing.Color.FromArgb(255, 80, 80, 80);//colore del bottone attivo
+            tab.BackColor = System.Drawing.Color.FromArgb(255, 80, 80, 80);
         }
 
         private void loadhistoryandplot()
@@ -64,7 +71,7 @@ namespace WeatherAPP
 
             if (!File.Exists(path))
             {
-                MessageBox.Show("file json non trovato");
+                MessageBox.Show("File JSON non trovato.");
                 return;
             }
 
@@ -73,83 +80,157 @@ namespace WeatherAPP
 
             if (history == null || history.Count == 0)
             {
-                MessageBox.Show("il file json è vuoto");
+                MessageBox.Show("Il file JSON è vuoto.");
                 return;
             }
 
-            history = history.OrderBy(h => h.timestamp).ToList();//ordino per data crescente
+            history = history.OrderBy(h => h.timestamp).ToList();
 
-            double[] xs = history.Select(h => h.timestamp.ToOADate()).ToArray();//converto le date in formato numerico per scottplot
-            double[] temps = history.Select(h => h.temperature).ToArray();//estraggo i dati in array per scottplot
-            double[] aqi = history.Select(h => h.aqi).ToArray();    
+            double[] xs = history.Select(h => h.timestamp.ToOADate()).ToArray();
+            double[] temps = history.Select(h => h.temperature).ToArray();
+            double[] aqi = history.Select(h => (double)h.aqi).ToArray();
             double[] pm25 = history.Select(h => h.pm25).ToArray();
             double[] pm10 = history.Select(h => h.pm10).ToArray();
 
-            // temperatura
-            plot_temp.Plot.Clear();
-            var t = plot_temp.Plot.Add.Scatter(xs, temps);
-            t.Color = col(4280193279); // dodgerblue colore
-            t.LineWidth = 2;//spessore linea
-            plot_temp.Plot.Axes.DateTimeTicksBottom();
-            plot_temp.Plot.Title("temperatura ultimi 15 giorni");
-            plot_temp.Plot.YLabel("°c");
-            plot_temp.Plot.XLabel("data");
-            plot_temp.Refresh();
-
-            // aqi
-            plot_aqi.Plot.Clear();
-            var a = plot_aqi.Plot.Add.Scatter(xs, aqi);
-            a.Color = col(4281519410); // limegreen
-            a.LineWidth = 2;
-            plot_aqi.Plot.Axes.DateTimeTicksBottom();
-            plot_aqi.Plot.Title("aqi ultimi 15 giorni");
-            plot_aqi.Plot.YLabel("aqi");
-            plot_aqi.Plot.XLabel("data");
-            plot_aqi.Refresh();
-
-            // pm2.5 e pm10
-            plot_pm.Plot.Clear();
-            var p25 = plot_pm.Plot.Add.Scatter(xs, pm25);
-            p25.Color = col(4294944000); // orange
-            p25.LineWidth = 2;
-            p25.LegendText = "pm2.5";
-
-            var p10 = plot_pm.Plot.Add.Scatter(xs, pm10);
-            p10.Color = col(4294901760); // red
-            p10.LineWidth = 2;
-            p10.LegendText = "pm10";
-
-            plot_pm.Plot.ShowLegend();
-            plot_pm.Plot.Axes.DateTimeTicksBottom();
-            plot_pm.Plot.Title("pm2.5 e pm10 ultimi 15 giorni");
-            plot_pm.Plot.YLabel("µg/m³");
-            plot_pm.Plot.XLabel("data");
-            plot_pm.Refresh();
-
-            // correlazione
-            plot_corr.Plot.Clear();
-            var c1 = plot_corr.Plot.Add.Scatter(temps, aqi);
-            c1.Color = col(4281519410); // limegreen
-            c1.LineWidth = 2;
-            c1.LegendText = "aqi";
-
-            var c2 = plot_corr.Plot.Add.Scatter(temps, pm25);
-            c2.Color = col(4294944000); // orange
-            c2.LineWidth = 2;
-            c2.LegendText = "pm2.5";
-
-            var c3 = plot_corr.Plot.Add.Scatter(temps, pm10);
-            c3.Color = col(4294901760); // red
-            c3.LineWidth = 2;
-            c3.LegendText = "pm10";
-
-            plot_corr.Plot.ShowLegend();
-            plot_corr.Plot.Title("correlazione temperatura – inquinamento");
-            plot_corr.Plot.XLabel("temperatura (°c)");
-            plot_corr.Plot.YLabel("valori inquinanti");
-            plot_corr.Refresh();
+            BuildTemperature(xs, temps);
+            BuildAqi(xs, aqi);
+            BuildPm(xs, pm25, pm10);
+            BuildCorrelation(xs, temps, aqi);
 
             showplot(plot_temp, btn_temp);
+        }
+
+        // temperatura nel tempo
+        private void BuildTemperature(double[] xs, double[] temps)
+        {
+            plot_temp.Plot.Clear();
+
+            var line = plot_temp.Plot.Add.Scatter(xs, temps);
+            line.Color = col(0xFF1E90FF);
+            line.LineWidth = 2;
+            line.MarkerSize = 6;
+            line.LegendText = "Temperatura (°C)";
+
+            plot_temp.Plot.Axes.DateTimeTicksBottom();
+            plot_temp.Plot.ShowLegend(Alignment.UpperRight);
+            plot_temp.Plot.Title("Temperatura nel tempo");
+            plot_temp.Plot.YLabel("°C");
+            plot_temp.Plot.XLabel("Data");
+            plot_temp.Refresh();
+        }
+
+        // aqi con barre colorate
+        private void BuildAqi(double[] xs, double[] aqi)
+        {
+            plot_aqi.Plot.Clear();
+
+            for (int i = 0; i < xs.Length; i++)
+            {
+                var bar = plot_aqi.Plot.Add.Bar(xs[i], aqi[i]);
+                bar.Color = aqicolor(aqi[i]);
+            }
+
+            plot_aqi.Plot.Add.Annotation(
+                "■ 1 Buono  ■ 2 Discreto  ■ 3 Moderato  ■ 4 Scadente  ■ 5 Pessimo",
+                Alignment.LowerRight);
+
+            plot_aqi.Plot.Axes.DateTimeTicksBottom();
+            plot_aqi.Plot.Title("Qualità dell'aria (AQI)");
+            plot_aqi.Plot.YLabel("AQI  (1 = Buono → 5 = Pessimo)");
+            plot_aqi.Plot.XLabel("Data");
+            plot_aqi.Refresh();
+        }
+
+        // pm2.5 e pm10 con barre affiancate
+        private void BuildPm(double[] xs, double[] pm25, double[] pm10)
+        {
+            plot_pm.Plot.Clear();
+
+            double offset = 0.15;
+
+            for (int i = 0; i < xs.Length; i++)
+            {
+                var b25 = plot_pm.Plot.Add.Bar(xs[i] - offset, pm25[i]);
+                b25.Color = col(0xFFFFA500);
+
+                var b10 = plot_pm.Plot.Add.Bar(xs[i] + offset, pm10[i]);
+                b10.Color = col(0xFFE03030);
+            }
+
+            var soglia25 = plot_pm.Plot.Add.HorizontalLine(15);
+            soglia25.Color = col(0xAAFFA500);
+            soglia25.LineWidth = 1.5f;
+            soglia25.LinePattern = LinePattern.Dashed;
+
+            var soglia10 = plot_pm.Plot.Add.HorizontalLine(45);
+            soglia10.Color = col(0xAAE03030);
+            soglia10.LineWidth = 1.5f;
+            soglia10.LinePattern = LinePattern.Dashed;
+
+            plot_pm.Plot.Add.Annotation(
+                "■ PM2.5 (arancione)   ■ PM10 (rosso)\n--- soglia OMS: PM2.5=15 µg/m³  PM10=45 µg/m³",
+                Alignment.UpperRight);
+
+            plot_pm.Plot.Axes.DateTimeTicksBottom();
+            plot_pm.Plot.Title("PM2.5 e PM10 nel tempo");
+            plot_pm.Plot.YLabel("µg/m³");
+            plot_pm.Plot.XLabel("Data");
+            plot_pm.Refresh();
+        }
+
+        // correlazione temperatura vs aqi
+        private void BuildCorrelation(double[] xs, double[] temps, double[] aqi)
+        {
+            plot_corr.Plot.Clear();
+
+            var lineTemp = plot_corr.Plot.Add.Scatter(xs, temps);
+            lineTemp.Color = col(0xFF1E90FF);
+            lineTemp.LineWidth = 2;
+            lineTemp.MarkerSize = 5;
+            lineTemp.LegendText = "Temperatura (°C)  [asse sx]";
+            lineTemp.Axes.YAxis = plot_corr.Plot.Axes.Left;
+
+            var lineAqi = plot_corr.Plot.Add.Scatter(xs, aqi);
+            lineAqi.Color = col(0xFFFF4444);
+            lineAqi.LineWidth = 2;
+            lineAqi.MarkerSize = 5;
+            lineAqi.LegendText = "AQI  [asse dx]";
+            lineAqi.Axes.YAxis = plot_corr.Plot.Axes.Right;
+
+            plot_corr.Plot.Axes.Left.Label.Text = "Temperatura (°C)";
+            plot_corr.Plot.Axes.Right.Label.Text = "AQI (1–5)";
+            plot_corr.Plot.Axes.SetLimitsY(0, 6);
+
+            double r = pearson(temps, aqi);
+            string strength = Math.Abs(r) >= 0.7 ? "forte" :
+                              Math.Abs(r) >= 0.4 ? "moderata" : "debole";
+
+            plot_corr.Plot.Axes.DateTimeTicksBottom();
+            plot_corr.Plot.ShowLegend(Alignment.UpperRight);
+            plot_corr.Plot.Title($"Temperatura vs AQI nel tempo  —  r = {r:F3} ({strength})");
+            plot_corr.Plot.XLabel("Data");
+            plot_corr.Refresh();
+        }
+
+        private static double[] lineartrend(double[] x, double[] y)
+        {
+            double mx = x.Average();
+            double my = y.Average();
+            double num = x.Zip(y, (xi, yi) => (xi - mx) * (yi - my)).Sum();
+            double den = x.Sum(xi => Math.Pow(xi - mx, 2));
+            double slope = den == 0 ? 0 : num / den;
+            return new[] { slope, my - slope * mx };
+        }
+
+        private static double pearson(double[] x, double[] y)
+        {
+            if (x.Length < 2) return 0;
+            double mx = x.Average();
+            double my = y.Average();
+            double num = x.Zip(y, (xi, yi) => (xi - mx) * (yi - my)).Sum();
+            double dx = Math.Sqrt(x.Sum(xi => Math.Pow(xi - mx, 2)));
+            double dy = Math.Sqrt(y.Sum(yi => Math.Pow(yi - my, 2)));
+            return (dx == 0 || dy == 0) ? 0 : num / (dx * dy);
         }
     }
 }

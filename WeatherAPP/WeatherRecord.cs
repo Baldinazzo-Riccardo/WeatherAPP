@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace WeatherAPP
 {
     public class WeatherRecord
     {
         //rappresenta una registrazione in un preciso momento
+        public string city { get; set; }
         public DateTime timestamp { get; set; }//data di registrazione del dato
         public double temperature { get; set; }
         public double aqi { get; set; }//indice di qualità dell'aria

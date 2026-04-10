@@ -25,6 +25,9 @@ namespace WeatherAPP
 
         public static void AppendRecord(WeatherRecord record)
         {
+            if (!string.Equals(record.city, "Vicenza", StringComparison.OrdinalIgnoreCase))
+                return;
+
             string path = GetPath();
             var list = Load();
 

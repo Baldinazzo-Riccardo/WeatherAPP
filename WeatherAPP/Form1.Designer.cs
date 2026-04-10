@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -42,9 +44,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pnl_data = new Panel();
+            guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             lbl_pm25 = new Label();
             lbl_PM10 = new Label();
             lbl_AQI = new Label();
@@ -72,7 +73,6 @@
             lbl_city = new Label();
             pnl_Loading = new Panel();
             guna2ProgressIndicator1 = new Guna.UI2.WinForms.Guna2ProgressIndicator();
-            guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             pnl_data.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pb_weather).BeginInit();
             guna2CustomGradientPanel4.SuspendLayout();
@@ -107,6 +107,27 @@
             pnl_data.Name = "pnl_data";
             pnl_data.Size = new Size(1231, 662);
             pnl_data.TabIndex = 1;
+            // 
+            // guna2Button2
+            // 
+            guna2Button2.BackColor = Color.Transparent;
+            guna2Button2.BorderRadius = 3;
+            guna2Button2.CustomizableEdges = customizableEdges1;
+            guna2Button2.DisabledState.BorderColor = Color.DarkGray;
+            guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;
+            guna2Button2.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            guna2Button2.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            guna2Button2.FillColor = Color.Gray;
+            guna2Button2.FocusedColor = Color.FromArgb(64, 64, 64);
+            guna2Button2.Font = new Font("Rubik", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            guna2Button2.ForeColor = Color.White;
+            guna2Button2.Location = new Point(1008, 81);
+            guna2Button2.Name = "guna2Button2";
+            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            guna2Button2.Size = new Size(186, 61);
+            guna2Button2.TabIndex = 29;
+            guna2Button2.Text = "VISUALIZZA GRAFICI";
+            guna2Button2.Click += guna2Button2_Click;
             // 
             // lbl_pm25
             // 
@@ -177,7 +198,7 @@
             // 
             pb_weather.BackgroundImageLayout = ImageLayout.Zoom;
             pb_weather.Location = new Point(90, 104);
-            pb_weather.Margin = new Padding(4, 4, 4, 4);
+            pb_weather.Margin = new Padding(4);
             pb_weather.Name = "pb_weather";
             pb_weather.Size = new Size(180, 180);
             pb_weather.TabIndex = 28;
@@ -206,7 +227,7 @@
             // 
             pb_day4.BackgroundImageLayout = ImageLayout.Stretch;
             pb_day4.Location = new Point(15, 62);
-            pb_day4.Margin = new Padding(4, 4, 4, 4);
+            pb_day4.Margin = new Padding(4);
             pb_day4.Name = "pb_day4";
             pb_day4.Size = new Size(110, 110);
             pb_day4.TabIndex = 31;
@@ -271,7 +292,7 @@
             // 
             pb_day3.BackgroundImageLayout = ImageLayout.Stretch;
             pb_day3.Location = new Point(15, 62);
-            pb_day3.Margin = new Padding(4, 4, 4, 4);
+            pb_day3.Margin = new Padding(4);
             pb_day3.Name = "pb_day3";
             pb_day3.Size = new Size(110, 110);
             pb_day3.TabIndex = 29;
@@ -324,7 +345,7 @@
             // 
             pb_day2.BackgroundImageLayout = ImageLayout.Stretch;
             pb_day2.Location = new Point(15, 62);
-            pb_day2.Margin = new Padding(4, 4, 4, 4);
+            pb_day2.Margin = new Padding(4);
             pb_day2.Name = "pb_day2";
             pb_day2.Size = new Size(110, 110);
             pb_day2.TabIndex = 29;
@@ -377,7 +398,7 @@
             // 
             pb_day1.BackgroundImageLayout = ImageLayout.Stretch;
             pb_day1.Location = new Point(15, 62);
-            pb_day1.Margin = new Padding(4, 4, 4, 4);
+            pb_day1.Margin = new Padding(4);
             pb_day1.Name = "pb_day1";
             pb_day1.Size = new Size(110, 110);
             pb_day1.TabIndex = 28;
@@ -470,26 +491,6 @@
             guna2ProgressIndicator1.ShadowDecoration.CustomizableEdges = customizableEdges15;
             guna2ProgressIndicator1.Size = new Size(135, 135);
             guna2ProgressIndicator1.TabIndex = 1;
-            // 
-            // guna2Button2
-            // 
-            guna2Button2.BorderRadius = 3;
-            guna2Button2.CustomizableEdges = customizableEdges1;
-            guna2Button2.DisabledState.BorderColor = Color.DarkGray;
-            guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;
-            guna2Button2.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            guna2Button2.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            guna2Button2.FillColor = Color.Gray;
-            guna2Button2.FocusedColor = Color.FromArgb(64, 64, 64);
-            guna2Button2.Font = new Font("Rubik", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            guna2Button2.ForeColor = Color.White;
-            guna2Button2.Location = new Point(1008, 81);
-            guna2Button2.Name = "guna2Button2";
-            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            guna2Button2.Size = new Size(186, 61);
-            guna2Button2.TabIndex = 29;
-            guna2Button2.Text = "VISUALIZZA GRAFICI";
-            guna2Button2.Click += guna2Button2_Click;
             // 
             // MainForm
             // 
