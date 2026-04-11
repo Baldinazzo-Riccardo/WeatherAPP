@@ -1,4 +1,4 @@
-Weather App
+# Weather App
 
 
 ![status](https://img.shields.io/badge/status-active-brightgreen)
