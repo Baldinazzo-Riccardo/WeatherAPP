@@ -112,3 +112,4 @@ L’interfaccia utilizza GunaUI2 per ottenere:
 - transizioni fluide  
 
 Lo sfondo cambia automaticamente in base al meteo (sole, pioggia, neve, nuvole).
+
