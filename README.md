@@ -1,5 +1,6 @@
 Weather App
 
+
 ![status](https://img.shields.io/badge/status-active-brightgreen)
 ![platform](https://img.shields.io/badge/platform-windows-blue)
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
