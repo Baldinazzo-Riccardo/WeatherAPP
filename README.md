@@ -1,10 +1,10 @@
 Weather App
 
-https://img.shields.io/badge/status-active-brightgreen
-https://img.shields.io/badge/platform-windows-blue
-https://img.shields.io/badge/.NET-10.0-purple
-https://img.shields.io/badge/UI-GunaUI2-orange
-https://img.shields.io/badge/charts-ScottPlot4-lightgrey
+![status](https://img.shields.io/badge/status-active-brightgreen)
+![platform](https://img.shields.io/badge/platform-windows-blue)
+![.NET](https://img.shields.io/badge/.NET-10.0-purple)
+![UI](https://img.shields.io/badge/UI-GunaUI2-orange)
+![charts](https://img.shields.io/badge/charts-ScottPlot4-lightgrey)
 
 Applicazione meteo per Windows sviluppata in C# (.NET 10, WinForms).  
 Mostra meteo attuale, qualità dell’aria, previsioni, grafici storici e correlazioni tra temperatura e inquinamento.  
@@ -41,8 +41,6 @@ L’app utilizza tre servizi di OpenWeather:
 1. Current Weather API
 Recupera:
 - temperatura  
-- umidità  
-- vento  
 - icona meteo  
 
 2. Forecast API
